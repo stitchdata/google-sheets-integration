@@ -1,4 +1,4 @@
-eadme #
+# Readme #
 This repo is a script to push data from a google drive spreadsheet to Stitch.
 
 **PLEASE NOTE:**  
