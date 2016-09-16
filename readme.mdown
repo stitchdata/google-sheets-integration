@@ -2,7 +2,7 @@
 This repo is a script to push data from a google drive spreadsheet to Stitch.
 
 **PLEASE NOTE:**  
-This script is not endorsed or supported by Stitch. Please feel free to contribute to this repository
+This script is not supported by Stitch as an integration. Please feel free to contribute to this repository.
 
 ## Requirements ##
 This connector assumes you have headers in in the spreadsheet in row 1 of the spreadsheet.  
