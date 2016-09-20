@@ -1,5 +1,5 @@
 # Readme #
-This repo is a script to push data from a google drive spreadsheet to Stitch.
+This repo is a script to push data from a google drive spreadsheet to [Stitch](https://www.stitchdata.com).
 
 **PLEASE NOTE:**  
 This script is not supported by Stitch as an integration. Please feel free to contribute to this repository.
