@@ -152,7 +152,7 @@ function largedoc(lastrow, lastcolumn, i, tablename, sheet, newkey){
     var payload_pre = insertKeys(spreadsheetdata, newkey, tablename, sheet, cid, api);
     var payload = toTransit(payload_pre);
     //Logger.log("Payload Length" + spreadsheetdata.length)
-    var url = 'https://pipeline-gateway.rjmetrics.com/push';
+    var url = 'https://api.stitchdata.com/v2/import/push';
     var options = {
       'method': 'post',
       "contentType" : "application/transit+json",
@@ -180,7 +180,7 @@ function smalldoc(lastrow, lastcolumn, i, firstrow, tablename, sheet, newkey){
   var payload_pre = insertKeys(spreadsheetdata, newkey, tablename, sheet, cid, api);
   var payload = toTransit(payload_pre);
   Logger.log(payload);
-  var url = 'https://pipeline-gateway.rjmetrics.com/push';
+  var url = 'https://api.stitchdata.com/v2/import/push';
   var options = {
     'method': 'post',
     "contentType" : "application/transit+json",
