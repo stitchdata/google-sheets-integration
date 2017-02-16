@@ -139,12 +139,12 @@ function insertKeys(spreadsheetdata, keys, tablename, sheet, cid){
 function largedoc(lastrow, lastcolumn, i, tablename, sheet, newkey){
   Logger.log('starting largedoc rows loop');
   // this first row setting is so the first row gets incremented by 10000 at the beginning of the while loop instead of the end.
-  var firstrow = -99998;
+  var firstrow = -9998;
   // send 10000 rows at a time, asyncronosly.
   while (lastrow > i){
-    firstrow = firstrow + 100000
+    firstrow = firstrow + 10000
     //Logger.log('rows ' + firstrow + " - " + (firstrow + 100000));
-    var datarange = sheet.getRange(firstrow, 1, 100000, lastcolumn);
+    var datarange = sheet.getRange(firstrow, 1, 10000, lastcolumn);
     //Logger.log("datarange = " + datarange.getNumRows())
     var api = ScriptProperties.getProperty('STITCHTOKEN');
     var cid = ScriptProperties.getProperty('STITCHID');
@@ -159,11 +159,11 @@ function largedoc(lastrow, lastcolumn, i, tablename, sheet, newkey){
       "payload": payload,
       "headers": {'Authorization': 'Bearer ' + api}
     };
-    Logger.log(options)
-    //var response = UrlFetchApp.fetch(url, options);
-    i = i + 100;
+    //Logger.log(options)
+    var response = UrlFetchApp.fetch(url, options);
+    i = i + 10000;
   }
-  firstrow = firstrow + 100000
+  firstrow = firstrow + 10000
   smalldoc(lastrow, lastcolumn, i, firstrow, tablename, sheet, newkey)
 }
 
