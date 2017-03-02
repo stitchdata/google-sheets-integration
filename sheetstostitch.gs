@@ -82,7 +82,7 @@ var t = transit;
 // This function is what kicks off the datasync. It will either loop through and send 10000 records at a time,
 // or send the entire dataset,depending on the size of the document
 
-function push(){
+function push(name){
   var ss = SpreadsheetApp.getActiveSpreadsheet();
   var sheet = ss.getSheetByName(name) || SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
   var tablename = normalizeHeaders([sheet.getSheetName()])[0];
