@@ -122,16 +122,28 @@ function insertKeys(spreadsheetdata, keys, tablename, sheet, cid){
  var arrayLength = spreadsheetdata.length;
   for (var i = 0; i < arrayLength; i++) {
     //Logger.log('keys' + keys);
-    var record = {};
-    record.client_id = parseInt(cid);
-    record.action = "upsert"
-    record.sequence = new Date().getTime();
-    record.table_name = tablename;
-    record.key_names = keys;
-    record.data = spreadsheetdata[i];
-
-    new_array.push(record);
-    //Logger.log(record);
+    var hasKeys = true;
+    for each (var key in keys) {
+      if (spreadsheetdata[i][key] == "") {
+        hasKeys = false;
+      }
+    }
+    if (hasKeys) {
+      var record = {};
+      record.client_id = parseInt(cid);
+      record.action = "upsert"
+      record.sequence = new Date().getTime();
+      record.table_name = tablename;
+      record.key_names = keys;
+      record.data = spreadsheetdata[i];
+      
+      new_array.push(record);
+      //Logger.log(record);
+    }
+    else {
+      Logger.log("Skipping empty row at: " + i);
+    }
+    
   }
   return new_array
 }
