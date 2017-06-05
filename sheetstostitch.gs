@@ -272,9 +272,10 @@ function getObjects(data, keys) {
       var cellData = data[i][j];
       if (isCellEmpty(cellData)) {
         object[keys[j]] = null
+      } else {
+        object[keys[j]] = cellData;
+        hasData = true;
       }
-      object[keys[j]] = cellData;
-      hasData = true;
     }
     if (hasData) {
       objects.push(object);
