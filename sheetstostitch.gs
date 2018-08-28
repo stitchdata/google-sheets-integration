@@ -102,7 +102,7 @@ function push(){
 
     var i = 10001;
     if (ScriptProperties.getProperty('STITCHTOKEN') == null || ScriptProperties.getProperty('STITCHID') == null || tablename == null){
-      msgBox("You are missing some of the required information to send the data. Please click the 'Setup Spreadsheet For Push' in the dropdown");
+      msgBox("You are missing some of the required information to send the data. Please click the 'Set Up Spreadsheet for Push' in the dropdown");
     }
     else if (lastrow > i){
       largedoc(lastrow, lastcolumn, i, tablename, sheet, newkey)
@@ -235,7 +235,7 @@ function onOpen() {
   var spreadsheet = SpreadsheetApp.getActive();
   var menuItems = [
     {name: 'Sync with Stitch', functionName: 'push'},
-    {name: 'Setup Spreadsheet For Push', functionName: 'onInstall'}
+    {name: 'Set Up Spreadsheet for Push', functionName: 'onInstall'}
   ];
   spreadsheet.addMenu('Stitch Import', menuItems);
   function auth() {}
