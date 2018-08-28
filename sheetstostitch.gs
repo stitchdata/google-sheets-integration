@@ -102,7 +102,7 @@ function push(){
 
     var i = 10001;
     if (ScriptProperties.getProperty('STITCHTOKEN') == null || ScriptProperties.getProperty('STITCHID') == null || tablename == null){
-      msgBox("You are missing some of the required information to send the data. Please click the 'Setup Spreadsheet For Push' in the dropdown");
+      msgBox("You are missing some of the required information to send the data. Please click the 'Set Up Spreadsheet for Push' in the dropdown");
     }
     else if (lastrow > i){
       largedoc(lastrow, lastcolumn, i, tablename, sheet, newkey)
@@ -220,9 +220,9 @@ function trackdoc(lastrow, tablename) {
 function onInstall() {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
   var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
-  var key = Browser.inputBox("Input Stitch API Token here. Press cancel if no change.", Browser.Buttons.OK_CANCEL);
-  var cid = Browser.inputBox("Input Stitch Client Id here. Look at your URL while on the Dashboard page to find your client ID. It’s the four-digit number between client and pipeline( https://app.stitchdata.com/v2/client/XXXX/pipeline/connections). Press cancel if no change.", Browser.Buttons.OK_CANCEL);
-  var primaryKey = Browser.inputBox("Enter a comma separated list of the primary key(s) for this Sheet (tab). Usually this will be one column, but if multiple columns make a row unique, add more. Press cancel if no change.", Browser.Buttons.OK_CANCEL);
+  var key = Browser.inputBox("Input Stitch API token here. You can generate an API token by creating an Import API integration (see https://www.stitchdata.com/docs/integrations/import-api). Press cancel if no change.", Browser.Buttons.OK_CANCEL);
+  var cid = Browser.inputBox("Input Stitch client ID here. Look at the URL on the Dashboard page – the client ID is the number between client and pipeline (https://app.stitchdata.com/client/XXXXXX/pipeline/connections). Press cancel if no change.", Browser.Buttons.OK_CANCEL);
+  var primaryKey = Browser.inputBox("Enter a comma-separated list of the primary key(s) for this sheet (tab). Usually this will be one column, but if multiple columns make a row unique, add more. Press cancel if no change.", Browser.Buttons.OK_CANCEL);
   if(key && key!="cancel") ScriptProperties.setProperty("STITCHTOKEN", key);
   if(cid && cid!="cancel") ScriptProperties.setProperty("STITCHID", cid);
   if(primaryKey && primaryKey!="cancel") ScriptProperties.setProperty(normalizeHeaders([sheet.getSheetName()]), primaryKey);
