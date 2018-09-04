@@ -235,7 +235,7 @@ function onOpen() {
   var spreadsheet = SpreadsheetApp.getActive();
   var menuItems = [
     {name: 'Sync with Stitch', functionName: 'push'},
-    {name: 'Setup Spreadsheet For Push', functionName: 'onInstall'}
+    {name: 'Set Up Spreadsheet for Push', functionName: 'onInstall'}
   ];
   spreadsheet.addMenu('Stitch Import', menuItems);
   function auth() {}
