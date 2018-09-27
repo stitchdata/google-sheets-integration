@@ -77,7 +77,7 @@ h("transit.extendToEQ",function(a,b){a.D=b.hashCode;a.C=b.equals;return a});h("t
 h("transit.readCache",function(){return new ua});h("transit.writeCache",function(){return new ta});})();
 
 var t = transit;
-
+var batchSize = 10000;
 
 // This function is what kicks off the datasync. It will either loop through and send 10000 records at a time,
 // or send the entire dataset,depending on the size of the document
@@ -100,7 +100,8 @@ function push(){
     var lastrow = range.getLastRow() + 1;
     trackdoc(lastrow, tablename);
 
-    var i = 10001;
+    var i = batchSize + 1 ;
+    Logger.log('starting "i" value : ' + batchSize)
     if (ScriptProperties.getProperty('STITCHTOKEN') == null || ScriptProperties.getProperty('STITCHID') == null || tablename == null){
       msgBox("You are missing some of the required information to send the data. Please click the 'Set Up Spreadsheet for Push' in the dropdown");
     }
@@ -151,18 +152,21 @@ function insertKeys(spreadsheetdata, keys, tablename, sheet, cid){
 function largedoc(lastrow, lastcolumn, i, tablename, sheet, newkey){
   Logger.log('starting largedoc rows loop');
   // this first row setting is so the first row gets incremented by 10000 at the beginning of the while loop instead of the end.
-  var firstrow = -9998;
+  var firstrow = (batchSize - 2)*-1;
   // send 10000 rows at a time, asyncronosly.
   while (lastrow > i){
-    firstrow = firstrow + 10000
+    firstrow = firstrow + batchSize
     //Logger.log('rows ' + firstrow + " - " + (firstrow + 100000));
-    var datarange = sheet.getRange(firstrow, 1, 10000, lastcolumn);
+    var datarange = sheet.getRange(firstrow, 1, batchSize, lastcolumn);
     //Logger.log("datarange = " + datarange.getNumRows())
     var api = ScriptProperties.getProperty('STITCHTOKEN');
     var cid = ScriptProperties.getProperty('STITCHID');
     var spreadsheetdata = getRowsData(sheet, datarange, 1);
     var payload_pre = insertKeys(spreadsheetdata, newkey, tablename, sheet, cid, api);
     var payload = toTransit(payload_pre);
+    Logger.log('Payload Rows: ' + payload_pre.length);
+  	var mb = roughSizeOfObject(payload) * 0.000001;
+  	Logger.log('Rough Payload Bytes: ' + mb );
     //Logger.log("Payload Length" + spreadsheetdata.length)
     var url = 'https://api.stitchdata.com/v2/import/push';
     var options = {
@@ -173,9 +177,9 @@ function largedoc(lastrow, lastcolumn, i, tablename, sheet, newkey){
     };
     //Logger.log(options)
     var response = UrlFetchApp.fetch(url, options);
-    i = i + 10000;
+    i = i + batchSize;
   }
-  firstrow = firstrow + 10000
+  firstrow = firstrow + batchSize
   smalldoc(lastrow, lastcolumn, i, firstrow, tablename, sheet, newkey)
 }
 
@@ -191,7 +195,10 @@ function smalldoc(lastrow, lastcolumn, i, firstrow, tablename, sheet, newkey){
   var spreadsheetdata = getRowsData(sheet, datarange, 1);
   var payload_pre = insertKeys(spreadsheetdata, newkey, tablename, sheet, cid, api);
   var payload = toTransit(payload_pre);
-  Logger.log(payload);
+  Logger.log('Payload Rows: ' + payload_pre.length);
+  var mb = roughSizeOfObject(payload) * 0.000001;
+  Logger.log('Rough Payload Bytes: ' + mb );
+  //Logger.log(payload);
   var url = 'https://api.stitchdata.com/v2/import/push';
   var options = {
     'method': 'post',
@@ -206,6 +213,39 @@ function smalldoc(lastrow, lastcolumn, i, firstrow, tablename, sheet, newkey){
   return response
 }
 
+function roughSizeOfObject( object ) {
+
+    var objectList = [];
+    var stack = [ object ];
+    var bytes = 0;
+
+    while ( stack.length ) {
+        var value = stack.pop();
+
+        if ( typeof value === 'boolean' ) {
+            bytes += 4;
+        }
+        else if ( typeof value === 'string' ) {
+            bytes += value.length * 2;
+        }
+        else if ( typeof value === 'number' ) {
+            bytes += 8;
+        }
+        else if
+        (
+            typeof value === 'object'
+            && objectList.indexOf( value ) === -1
+        )
+        {
+            objectList.push( value );
+
+            for( var i in value ) {
+                stack.push( value[ i ] );
+            }
+        }
+    }
+    return bytes;
+}
 
 function trackdoc(lastrow, tablename) {
  var remote = SpreadsheetApp.openById('1f33oopWLMFGtuWQlLpUrpyeScMXnRd9cGSQxKuZ51B0');
