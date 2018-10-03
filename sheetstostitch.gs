@@ -82,9 +82,9 @@ var batchSize = 10000;
 // This function is what kicks off the datasync. It will either loop through and send 10000 records at a time,
 // or send the entire dataset,depending on the size of the document
 
-function push(){
+function push(name){
   var ss = SpreadsheetApp.getActiveSpreadsheet();
-  var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  var sheet = ss.getSheetByName(name) || SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
   var tablename = normalizeHeaders([sheet.getSheetName()])[0];
   if (ScriptProperties.getProperty('STITCHTOKEN') == null || ScriptProperties.getProperty('STITCHID') == null || ScriptProperties.getProperty(tablename) == null){
     Browser.msgBox("You are missing some of the required information to send the data. Please click add the required information in the next prompt");
@@ -390,4 +390,10 @@ function isAlnum(char) {
 // Returns true if the character char is a digit, false otherwise.
 function isDigit(char) {
   return char >= '0' && char <= '9';
+}
+
+//Runs push() for the defined sheets
+function syncAllSheets() {
+  sheetNames = ['Sheet1' , 'Sheet2'] 
+  sheetNames.forEach(function(element) {push(element)})
 }
